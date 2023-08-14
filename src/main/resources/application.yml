@@ -1,0 +1,37 @@
+server:
+  port: 8080
+spring:
+  #没有绑定的url直接抛出错误
+  mvc:
+      throw-exception-if-no-handler-found: true
+  #不为静态文件建立映射
+  web:
+    resources:
+      add-mappings: false
+  # 数据源配置
+  datasource:
+    url: jdbc:mysql://localhost:3306/htwokey_security?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: root
+    password: aion
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+
+
+
+mybatis:
+  mapper-locations:
+    - classpath:mapper/*.xml
+
+jwt:
+  secret: admin-secret
+  expiration: 86400 # 24小时
+  header: Authorization
+  tokenHead: Bearer
+
+redis:
+  database: htwokey
+  key:
+    admin: 'adminUser'
+    resourceList: 'ams:resourceList'
+  expire:
+    common: 86400 # 24小时
