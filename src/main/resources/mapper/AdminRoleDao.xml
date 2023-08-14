@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.htwokey.htwokeysecurity.dao.AdminRoleDao">
+
+    <select id="getMenuList" resultType="com.htwokey.htwokeysecurity.entity.AdminMenu">
+        SELECT
+            m.id id,
+            m.parent_id parentId,
+            m.name `name`,
+            m.component component,
+            m.path path,
+            m.sort sort,
+            m.create_time createTime,
+            m.update_time update_time
+        FROM
+            t_admin_user_role_relation arr
+            LEFT JOIN t_admin_role r ON arr.role_id = r.id
+            LEFT JOIN t_admin_role_menu_relation rmr ON r.id = rmr.role_id
+            LEFT JOIN t_admin_menu m ON rmr.menu_id = m.id
+        WHERE
+            arr.user_id = #{userId}
+          AND m.id IS NOT NULL
+        GROUP BY
+            m.id
+        order by m.sort
+    </select>
+    <select id="getMenuListByRoleId" resultType="com.htwokey.htwokeysecurity.entity.AdminMenu">
+        SELECT
+            m.id id,
+            m.parent_id parentId,
+            m.name `name`,
+            m.component component,
+            m.path path,
+            m.sort sort,
+            m.create_time createTime,
+            m.update_time update_time
+        FROM
+            t_admin_role_menu_relation rmr
+            LEFT JOIN t_admin_menu m ON rmr.menu_id = m.id
+        WHERE
+            rmr.role_id = #{roleId}
+          AND m.id IS NOT NULL
+        GROUP BY
+            m.id
+        order by m.sort
+    </select>
+    <select id="getResourceListByRoleId" resultType="com.htwokey.htwokeysecurity.entity.AdminResource">
+        SELECT
+            r.id id,
+            r.create_time createTime,
+            r.`name` `name`,
+            r.url url,
+            r.description description,
+            r.category_id categoryId
+        FROM
+            t_admin_role_resource_relation rrr
+            LEFT JOIN t_admin_resource r ON rrr.resource_id = r.id
+        WHERE
+            rrr.role_id = #{roleId}
+          AND r.id IS NOT NULL
+        GROUP BY
+            r.id
+    </select>
+
+    <select id="deleteRoleMenuRelation" parameterType="Long" >
+        DELETE FROM t_admin_role_menu_relation WHERE role_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="deleteRoleResourceRelation" parameterType="Long" >
+        DELETE FROM t_admin_role_resource_relation WHERE role_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="deleteRolePermissionRelation" parameterType="Long">
+        DELETE FROM t_admin_role_permission_relation WHERE role_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+
+    <select id="deleteUserRoleRelation" parameterType="Long">
+        DELETE FROM t_admin_user_role_relation WHERE role_id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </select>
+</mapper>
