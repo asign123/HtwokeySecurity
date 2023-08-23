@@ -14,7 +14,7 @@ import java.util.List;
  *     后台用户表 服务接口
  * </p>
  * @author hchbo
- * @date 2023/4/14 10:12
+ * &#064;date  2023/4/14 10:12
  */
 public interface AdminUserService {
 

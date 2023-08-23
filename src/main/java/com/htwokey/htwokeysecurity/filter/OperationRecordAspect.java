@@ -58,7 +58,7 @@ public class OperationRecordAspect {
         String userAgent = request.getHeader("User-Agent");
         String requestURI = request.getRequestURI();
         String method = request.getMethod();
-        String params = "";
+        String params;
         String contentType = request.getContentType();
         if ("GET".equals(method)) {
             params = request.getQueryString();
@@ -93,11 +93,4 @@ public class OperationRecordAspect {
         operationLogService.save(operationLog);
     }
 
-    /**
-     * 打印返回参数
-     */
-//    @AfterReturning(returning = "result", pointcut = "pointCut()")
-//    public void printResult(Object result) {
-//        log.info("返回参数：{}", JSONObject.toJSONString(result));
-//    }
 }
