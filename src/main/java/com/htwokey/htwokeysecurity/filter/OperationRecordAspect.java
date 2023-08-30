@@ -30,10 +30,15 @@ import java.util.Date;
 public class OperationRecordAspect {
 
     private static final String POINT_CUT = "execution(public * com.htwokey.htwokeysecurity.controller.*.*(..))";
+
+    private final JwtTokenUtil jwtTokenUtil;
+
+    private final AdminOperationLogService operationLogService;
     @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-    @Autowired
-    private AdminOperationLogService operationLogService;
+    public OperationRecordAspect(JwtTokenUtil jwtTokenUtil, AdminOperationLogService operationLogService) {
+        this.jwtTokenUtil = jwtTokenUtil;
+        this.operationLogService = operationLogService;
+    }
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
